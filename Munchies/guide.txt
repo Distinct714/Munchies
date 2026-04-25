@@ -1,1 +1,2 @@
-Paghiwalayin mo yung mga html, css at php like objects lang icacall ng php sa html
+Paghiwalayin mo yung mga html, css at php, like objects lang icacall ng php sa html
+follow maam's OOP and also use class as well to reuse code
