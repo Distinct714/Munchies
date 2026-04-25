@@ -1,0 +1,125 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f9f7f4; /* Cream background from screenshot */
+    overflow-x: hidden;
+}
+
+/* Navbar (Keeping it consistent) */
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
+    background-color: #2c2f33; 
+    height: 60px;
+}
+
+.logo {
+    color: white;
+    font-size: 1.1rem;
+    flex: 1;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    flex: 2;
+    justify-content: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 0.95rem;
+}
+
+.navbar::after {
+    content: "";
+    flex: 1;
+}
+
+/* Split Layout */
+.split-container {
+    display: flex;
+    height: calc(100vh - 60px);
+}
+
+.image-section {
+    flex: 1;
+}
+
+.image-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Form Section */
+.form-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.form-wrapper {
+    width: 100%;
+    max-width: 500px;
+}
+
+h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    color: #000;
+    line-height: 1.1;
+    margin-bottom: 40px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Form Alignment */
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    flex: 0 0 110px; /* Exact width for labels to align inputs */
+    font-weight: bold;
+    color: #000;
+}
+
+.form-group input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #999;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: transparent;
+}
+
+/* The "Enter" Button */
+.submit-btn {
+    margin-top: 20px;
+    margin-left: 110px; /* Matches label width */
+    background-color: #2c2f33;
+    color: white;
+    padding: 12px 50px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}

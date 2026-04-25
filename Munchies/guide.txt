@@ -1,0 +1,1 @@
+Paghiwalayin mo yung mga html, css at php like objects lang icacall ng php sa html
