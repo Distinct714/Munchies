@@ -1,3 +1,41 @@
+<?php
+session_start();
+
+require_once __DIR__ . '/classes/MuffinShop.php';
+
+$shop = new MuffinShop();
+$products = $shop->getProducts();
+$customerName = $_SESSION['munchies_customer_name'] ?? '';
+$orderResult = [
+    'errors' => [],
+    'success' => [],
+    'total' => 0,
+];
+
+if (!empty($_POST)) {
+    $firstName = trim($_POST['firstname'] ?? '');
+    $lastName = trim($_POST['lastname'] ?? '');
+    $customerName = trim($firstName . ' ' . $lastName);
+
+    if ($customerName !== '') {
+        $_SESSION['munchies_customer_name'] = $customerName;
+    }
+
+    $hasQuantityData = isset($_POST['qty']) && is_array($_POST['qty']);
+
+    if ($hasQuantityData) {
+        $paymentMethod = $_POST['pay'] ?? '';
+
+        if ($paymentMethod === '') {
+            $orderResult['errors'][] = 'Please select a payment method.';
+        } else {
+            $orderResult = $shop->processOrder($_POST['qty']);
+        }
+    }
+}
+
+$paymentMethod = $_POST['pay'] ?? '';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,93 +60,78 @@
         <header class="page-header">
             <h1>What would you like to buy?</h1>
             <p>Hey there! The floor is yours—grab whatever hits the spot and fits exactly what you want right now.</p>
+            <?php if ($customerName !== ''): ?>
+                <div class="customer-note">Hello, <?php echo htmlspecialchars($customerName); ?>. Your order form is ready.</div>
+            <?php endif; ?>
         </header>
 
-        <section class="product-grid">
-            <div class="card">
-                <img src="static/assets/blueberry_muffin.png" alt="Blueberry">
-                <div class="card-info">
-                    <h3>Blueberry Muffin</h3>
-                    <p>A golden-domed treat featuring a tender, buttery crumb and pockets of sweet, bursting blueberries.</p>
-                    <div class="card-footer">
-                        <span class="price">₱99.00</span>
-                        <button class="add-btn">Add to cart</button>
-                    </div>
-                </div>
-            </div>
+        <?php if (!empty($orderResult['errors'])): ?>
+            <section class="message-box error-box">
+                <h4>Please check your order</h4>
+                <ul>
+                    <?php foreach ($orderResult['errors'] as $error): ?>
+                        <li><?php echo htmlspecialchars($error); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </section>
+        <?php endif; ?>
 
-            <div class="card">
-                <img src="static/assets/chocolatechip_muffin.jpg" alt="Chocolate">
-                <div class="card-info">
-                    <h3>Chocolate Chip Muffin</h3>
-                    <p>A rich, buttery muffin packed with semi-sweet chocolate chips that create melty pockets of cocoa throughout.</p>
-                    <div class="card-footer">
-                        <span class="price">₱95.00</span>
-                        <button class="add-btn">Add to cart</button>
-                    </div>
-                </div>
-            </div>
+        <?php if (!empty($orderResult['success'])): ?>
+            <section class="message-box success-box">
+                <h4>Order updated</h4>
+                <p><?php echo htmlspecialchars(implode(', ', $orderResult['success'])); ?></p>
+                <p>Total: <strong>₱<?php echo number_format((float) $orderResult['total'], 2); ?></strong></p>
+            </section>
+        <?php endif; ?>
 
-            <div class="card">
-                <img src="static/assets/banana_muffin.jpg" alt="Banana">
-                <div class="card-info">
-                    <h3>Banana Muffin</h3>
-                    <p>An aromatic and incredibly moist treat made from ripened bananas that provide a dense texture.</p>
-                    <div class="card-footer">
-                        <span class="price">₱69.00</span>
-                        <button class="add-btn">Add to cart</button>
-                    </div>
-                </div>
-            </div>
+        <form action="product.php" method="POST">
+            <section class="product-grid">
+                <?php foreach ($products as $productId => $product): ?>
+                    <?php $stock = $shop->getStock($productId); ?>
+                    <div class="card <?php echo $stock === 0 ? 'sold-out' : ''; ?>">
+                        <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['alt']); ?>">
+                        <div class="card-info">
+                            <div>
+                                <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+                                <p><?php echo htmlspecialchars($product['description']); ?></p>
+                            </div>
 
-            <div class="card">
-                <img src="static/assets/appleoatmeal_muffins.jpg" alt="Apple">
-                <div class="card-info">
-                    <h3>Apple with Oatmeal Muffin</h3>
-                    <p>A hearty, wholesome muffin blending chewy oats with tender chunks of tart apple for a textured breakfast.</p>
-                    <div class="card-footer">
-                        <span class="price">₱89.00</span>
-                        <button class="add-btn">Add to cart</button>
-                    </div>
-                </div>
-            </div>
+                            <div class="stock-row">
+                                <span class="price">₱<?php echo number_format((float) $product['price'], 2); ?></span>
+                                <span class="stock-badge <?php echo $stock === 0 ? 'empty' : ''; ?>">
+                                    Stock: <?php echo $stock; ?>
+                                </span>
+                            </div>
 
-            <div class="card">
-                <img src="static/assets/cinnamon_muffin.jpg" alt="Cinnamon">
-                <div class="card-info">
-                    <h3>Cinnamon Muffin</h3>
-                    <p>A light and airy spiced muffin featuring a warm cinnamon-sugar swirl and a crisp, fragrant topping.</p>
-                    <div class="card-footer">
-                        <span class="price">₱75.00</span>
-                        <button class="add-btn">Add to cart</button>
+                            <div class="quantity-row">
+                                <label for="qty-<?php echo htmlspecialchars($productId); ?>">Quantity</label>
+                                <input
+                                    type="number"
+                                    id="qty-<?php echo htmlspecialchars($productId); ?>"
+                                    name="qty[<?php echo htmlspecialchars($productId); ?>]"
+                                    min="0"
+                                    max="<?php echo $stock; ?>"
+                                    value="<?php echo $shop->getInitialQuantity($productId); ?>"
+                                    <?php echo $stock === 0 ? 'disabled' : ''; ?>
+                                >
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                <?php endforeach; ?>
+            </section>
 
-            <div class="card">
-                <img src="static/assets/cappuccino_muffin.jpg" alt="Cappuccino">
-                <div class="card-info">
-                    <h3>Cappuccino Muffin</h3>
-                    <p>A bold, sophisticated pastry infused with espresso notes that offer a deep roasted aroma.</p>
-                    <div class="card-footer">
-                        <span class="price">₱75.00</span>
-                        <button class="add-btn">Add to cart</button>
-                    </div>
+            <section class="checkout-bar">
+                <div class="payment-methods">
+                    <h4>Payment Methods</h4>
+                    <label><input type="radio" name="pay" value="cod" <?php echo $paymentMethod === 'cod' ? 'checked' : ''; ?>> Cash on Delivery</label>
+                    <label><input type="radio" name="pay" value="online" <?php echo $paymentMethod === 'online' ? 'checked' : ''; ?>> Online Cash</label>
                 </div>
-            </div>
-        </section>
-
-        <section class="checkout-bar">
-            <div class="payment-methods">
-                <h4>Payment Methods</h4>
-                <label><input type="radio" name="pay"> Cash on Delivery</label>
-                <label><input type="radio" name="pay"> Online Cash</label>
-            </div>
-            <div class="total-section">
-                <p>Total: <strong>₱0.00</strong></p>
-                <a href="index.php"><button class="submit-btn">Submit</button></a>
-            </div>
-        </section>
+                <div class="total-section">
+                    <p>Total: <strong>₱<?php echo number_format((float) $orderResult['total'], 2); ?></strong></p>
+                    <button type="submit" class="submit-btn">Submit</button>
+                </div>
+            </section>
+        </form>
     </main>
 
     <footer>
