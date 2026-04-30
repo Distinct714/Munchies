@@ -14,7 +14,7 @@ class MuffinShop
                 'price' => 99.00,
                 'image' => 'static/assets/blueberry_muffin.png',
                 'alt' => 'Blueberry Muffin',
-                'default_stock' => 12,
+                'default_stock' => 50,
             ],
             'chocolatechip' => [
                 'name' => 'Chocolate Chip Muffin',
@@ -22,7 +22,7 @@ class MuffinShop
                 'price' => 95.00,
                 'image' => 'static/assets/chocolatechip_muffin.jpg',
                 'alt' => 'Chocolate Chip Muffin',
-                'default_stock' => 10,
+                'default_stock' => 50,
             ],
             'banana' => [
                 'name' => 'Banana Muffin',
@@ -30,7 +30,7 @@ class MuffinShop
                 'price' => 69.00,
                 'image' => 'static/assets/banana_muffin.jpg',
                 'alt' => 'Banana Muffin',
-                'default_stock' => 8,
+                'default_stock' => 50,
             ],
             'apple_oatmeal' => [
                 'name' => 'Apple with Oatmeal Muffin',
@@ -38,7 +38,7 @@ class MuffinShop
                 'price' => 89.00,
                 'image' => 'static/assets/appleoatmeal_muffins.jpg',
                 'alt' => 'Apple with Oatmeal Muffin',
-                'default_stock' => 6,
+                'default_stock' => 50,
             ],
             'cinnamon' => [
                 'name' => 'Cinnamon Muffin',
@@ -46,7 +46,7 @@ class MuffinShop
                 'price' => 75.00,
                 'image' => 'static/assets/cinnamon_muffin.jpg',
                 'alt' => 'Cinnamon Muffin',
-                'default_stock' => 9,
+                'default_stock' => 50,
             ],
             'cappuccino' => [
                 'name' => 'Cappuccino Muffin',
@@ -54,7 +54,7 @@ class MuffinShop
                 'price' => 75.00,
                 'image' => 'static/assets/cappuccino_muffin.jpg',
                 'alt' => 'Cappuccino Muffin',
-                'default_stock' => 7,
+                'default_stock' => 50,
             ],
         ];
 
