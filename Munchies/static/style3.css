@@ -25,6 +25,43 @@ body {
 .page-header h1 { font-size: 2.2rem; margin-bottom: 10px; color: #000; }
 .page-header p { margin-bottom: 40px; color: #555; }
 
+.customer-note {
+    display: inline-block;
+    background: #eef2ff;
+    color: #273469;
+    border-left: 4px solid #2c2f33;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 18px;
+    font-size: 0.95rem;
+}
+
+.message-box {
+    background: white;
+    padding: 18px 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 22px;
+}
+
+.message-box h4 {
+    margin-bottom: 10px;
+    color: #000;
+}
+
+.message-box ul {
+    padding-left: 18px;
+    color: #555;
+}
+
+.error-box {
+    border-left: 4px solid #c62828;
+}
+
+.success-box {
+    border-left: 4px solid #2e7d32;
+}
+
 /* Grid for the 2-column layout */
 .product-grid {
     display: grid;
@@ -57,9 +94,14 @@ body {
     flex: 1;
 }
 
+.sold-out {
+    opacity: 0.75;
+}
+
 .card-info h3 { font-size: 1.1rem; margin-bottom: 5px; color: #000; }
 .card-info p { font-size: 0.85rem; line-height: 1.4; color: #666; }
 
+.stock-row,
 .card-footer {
     display: flex;
     justify-content: space-between;
@@ -68,6 +110,40 @@ body {
 }
 
 .price { font-weight: 700; font-size: 1rem; }
+
+.stock-badge {
+    background: #f1f1f1;
+    color: #333;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+.stock-badge.empty {
+    background: #fce8e6;
+    color: #b3261e;
+}
+
+.quantity-row {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-row label {
+    font-size: 0.85rem;
+    color: #444;
+    min-width: 70px;
+}
+
+.quantity-row input {
+    width: 90px;
+    padding: 7px 10px;
+    border: 1px solid #d6d6d6;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
 
 .add-btn, .submit-btn {
     background-color: #2c2f33;
