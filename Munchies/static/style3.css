@@ -1,4 +1,8 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
     font-family: 'Inter', sans-serif;
@@ -6,7 +10,7 @@ body {
     color: #333;
 }
 
-/* Navbar (Consistent) */
+/* NAVBAR LAYOUT*/
 .navbar {
     background-color: #2c2f33;
     height: 60px;
@@ -15,43 +19,56 @@ body {
     padding: 0 50px;
     color: white;
 }
-.logo { flex: 1; }
-.nav-links { flex: 2; display: flex; justify-content: center; gap: 30px; list-style: none; }
-.nav-links a { color: white; text-decoration: none; font-size: 0.9rem; }
-.navbar::after { content: ""; flex: 1; }
 
-.container { width: 90%; max-width: 1100px; margin: 40px auto; }
+.logo {
+    flex: 1;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
 
-.page-header h1 { font-size: 2.2rem; margin-bottom: 10px; color: #000; }
-.page-header p { margin-bottom: 40px; color: #555; }
+.nav-links {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    list-style: none;
+}
 
-.customer-note {
-    display: inline-block;
-    background: #eef2ff;
-    color: #273469;
-    border-left: 4px solid #2c2f33;
-    padding: 10px 14px;
-    border-radius: 4px;
-    margin-bottom: 18px;
-    font-size: 0.95rem;
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.navbar::after {
+    content: "";
+    flex: 1;
+}
+
+/* PRODUCT LAYOUT*/
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+.page-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    color: #000;
+}
+
+.page-header p {
+    margin-bottom: 40px;
+    color: #555;
 }
 
 .message-box {
     background: white;
     padding: 18px 20px;
     border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     margin-bottom: 22px;
-}
-
-.message-box h4 {
-    margin-bottom: 10px;
-    color: #000;
-}
-
-.message-box ul {
-    padding-left: 18px;
-    color: #555;
 }
 
 .error-box {
@@ -62,7 +79,6 @@ body {
     border-left: 4px solid #2e7d32;
 }
 
-/* Grid for the 2-column layout */
 .product-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -70,13 +86,12 @@ body {
     margin-bottom: 50px;
 }
 
-/* Product Card Styling */
 .card {
-    background: white;
+    background: #F8F5F2;
     display: flex;
     padding: 15px;
     border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 .card img {
@@ -95,32 +110,27 @@ body {
 }
 
 .sold-out {
-    opacity: 0.75;
+    opacity: 0.6;
 }
 
-.card-info h3 { font-size: 1.1rem; margin-bottom: 5px; color: #000; }
-.card-info p { font-size: 0.85rem; line-height: 1.4; color: #666; }
-
-.stock-row,
-.card-footer {
+.stock-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
 }
 
-.price { font-weight: 700; font-size: 1rem; }
+.price {
+    font-weight: 700;
+}
 
 .stock-badge {
-    background: #f1f1f1;
-    color: #333;
-    font-size: 0.8rem;
     padding: 4px 10px;
-    border-radius: 999px;
+    border-radius: 4px;
+    font-size: 0.8rem;
 }
 
 .stock-badge.empty {
-    background: #fce8e6;
     color: #b3261e;
 }
 
@@ -128,56 +138,146 @@ body {
     margin-top: 12px;
     display: flex;
     align-items: center;
-    gap: 10px;
-}
-
-.quantity-row label {
-    font-size: 0.85rem;
-    color: #444;
-    min-width: 70px;
+    gap: 8px;
 }
 
 .quantity-row input {
-    width: 90px;
-    padding: 7px 10px;
-    border: 1px solid #d6d6d6;
+    width: 60px;
+    padding: 6px;
+    border: 1px solid #ddd;
     border-radius: 4px;
+}
+
+.add-btn {
+    background: #2c2f33;
+    color: white;
+    border: none;
+    padding: 10px 40px;
+    margin-left: 120px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.add-btn:hover {
+    background: #444;
+}
+
+/* CHECKOUT LAYOUT*/
+
+.checkout-bar {
+    padding: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-radius: 4px;
+    box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.customer-note {
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    color: #000;
+    background: transparent;
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+.cart-summary {
+    flex: 2;
+}
+
+.cart-summary h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.cart-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cart-list li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: none;
+    padding: 4px 0;
     font-size: 0.9rem;
 }
 
-.add-btn, .submit-btn {
-    background-color: #2c2f33;
+.remove-btn {
+    background: #2c2f33;
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 4px 12px;
+    border-radius: 2px;
     cursor: pointer;
-    font-size: 0.85rem;
+    text-decoration: none;
+    font-size: 0.75rem;
 }
 
-/* Checkout Bar */
-.checkout-bar {
-    background: white;
-    padding: 25px 40px;
+.total-section {
+    flex: 1;
+    text-align: right;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.payment-methods h4 { margin-bottom: 15px; font-size: 1rem; }
-.payment-methods label { margin-right: 20px; font-size: 0.9rem; cursor: pointer; }
+.total-section p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    font-weight: 400;
+}
 
-.total-section { text-align: right; }
-.total-section p { font-size: 1.1rem; margin-bottom: 10px; }
-.submit-btn { padding: 10px 40px; }
+.submit-btn {
+    background: #2c2f33;
+    color: white;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.payment-methods {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.payment-methods h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.payment-methods label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+/* FOOTER LAYOUT*/
 
 footer {
     text-align: center;
     padding: 30px;
     background: #2c2f33;
     color: #ccc;
-    font-size: 0.85rem;
     margin-top: 50px;
 }
