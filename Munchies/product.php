@@ -1,4 +1,4 @@
-<?php
+<?php // PHP BACKEND FOR HANDLING MUNCHIES LOGIC SYSTEM
 
 session_start(); // Starts the session to track the cart and user data.
 
@@ -84,9 +84,8 @@ foreach ($_SESSION['cart'] as $id => $qty) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buy - Munchies</title>
+    <title>Order | Munchies</title>
     <link rel="stylesheet" href="static/style3.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -137,7 +136,7 @@ foreach ($_SESSION['cart'] as $id => $qty) {
                                     <?php echo $stock === 0 ? 'disabled' : ''; ?>
                                 >
                                 <button type="submit" name="add_to_cart" value="<?php echo $productId; ?>" class="add-btn" <?php echo $stock === 0 ? 'disabled' : ''; ?>>
-                                    Add
+                                    Add to Cart
                                 </button>
                             </div>
                         </div>
