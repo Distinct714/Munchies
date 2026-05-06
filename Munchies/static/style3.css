@@ -8,6 +8,10 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: #f4f4f4;
     color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* This ensures the body is at least the height of the screen */
+    margin: 0;
 }
 
 /* NAVBAR LAYOUT*/
@@ -50,6 +54,7 @@ body {
     width: 90%;
     max-width: 1100px;
     margin: 40px auto;
+    flex: 1;
 }
 
 .page-header h1 {
@@ -96,9 +101,9 @@ body {
 
 .card img {
     width: 160px;
-    height: 120px;
+    height: 170px;
     object-fit: cover;
-    border-radius: 2px;
+    border-radius: 4px;
 }
 
 .card-info {
@@ -152,8 +157,8 @@ body {
     background: #2c2f33;
     color: white;
     border: none;
-    padding: 10px 40px;
-    margin-left: 120px;
+    padding: 10px 10px;
+    margin-left: 140px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.8rem;
@@ -275,9 +280,9 @@ body {
 /* FOOTER LAYOUT*/
 
 footer {
-    text-align: center;
-    padding: 30px;
-    background: #2c2f33;
-    color: #ccc;
-    margin-top: 50px;
+    text-align: center; 
+    padding: 30px; 
+    background: #2c2f33; 
+    color: #ccc; 
+    width: 100%;
 }
