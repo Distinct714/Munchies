@@ -1,3 +1,5 @@
+/* PRODUCT LAYOUT*/
+
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +12,7 @@ body {
     color: #333;
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* This ensures the body is at least the height of the screen */
+    min-height: 100vh;
     margin: 0;
 }
 
