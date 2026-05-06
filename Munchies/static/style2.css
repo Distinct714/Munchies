@@ -1,4 +1,4 @@
-/* Reset */
+/* FILL-OUT LAYOUT */
 * {
     margin: 0;
     padding: 0;
@@ -7,11 +7,15 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #f9f7f4; /* Cream background from screenshot */
+    background-color: #f9f7f4;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
 }
 
-/* Navbar (Keeping it consistent) */
+/* Navbar*/
 .navbar {
     display: flex;
     align-items: center;
@@ -97,7 +101,7 @@ h1 {
 }
 
 .form-group label {
-    flex: 0 0 110px; /* Exact width for labels to align inputs */
+    flex: 0 0 110px;
     font-weight: bold;
     color: #000;
 }
@@ -114,7 +118,7 @@ h1 {
 /* The "Enter" Button */
 .submit-btn {
     margin-top: 20px;
-    margin-left: 110px; /* Matches label width */
+    margin-left: 110px;
     background-color: #2c2f33;
     color: white;
     padding: 12px 50px;
