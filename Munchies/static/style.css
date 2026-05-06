@@ -1,4 +1,4 @@
-/* Base Styles */
+/* HOME LAYOUT */
 * {
     margin: 0;
     padding: 0;
@@ -101,11 +101,11 @@ p {
 }
 
 .btn-primary {
-    background-color: #343a40; /* Dark slate button */
+    background-color: #343a40;
 }
 
 .btn-secondary {
-    background-color: #2c2f33; /* Slightly darker button */
+    background-color: #2c2f33;
 }
 
 .btn:hover {
