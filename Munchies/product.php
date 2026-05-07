@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($firstName !== '' || $lastName !== '') {
         $customerName = trim($firstName . ' ' . $lastName);
         $_SESSION['munchies_customer_name'] = $customerName;
-        setcookie('munchies_user', $customerName, time() + (86400 * 30), "/"); 
+        setcookie('munchies_user', $customerName, time() + 60, "/"); 
     }
     
     // 2. ADD TO CART LOGIC
@@ -48,25 +48,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 4. FINAL ORDER SUBMISSION
     if (isset($_POST['final_submit'])) {
-
         $paymentMethod = $_POST['pay'] ?? '';
+        
+        // Check 1: Validate payment method
         if ($paymentMethod === '') {
-            $orderResult['errors'][] = 'Please select a payment method.';
-        } elseif (empty($_SESSION['cart'])) {
-            $orderResult['errors'][] = 'Your cart is empty.';
-        } else {
-            $orderResult = $shop->processOrder($_SESSION['cart']);
-            if (empty($orderResult['errors'])) {
-                $_SESSION['cart'] = []; // Clear cart on success
-            }
+            $orderResult['errors'][] = 'Please select a payment method before submitting.';
+        } 
+        
+        // Check 2: Validate that the cart is not empty
+        if (empty($_SESSION['cart'])) {
+            $orderResult['errors'][] = 'Your cart is empty. Please add at least one muffin.';
         }
 
-        $orderResult = $shop->processOrder($_SESSION['cart']);
+        // Only proceed to process the order if the above checks passed
         if (empty($orderResult['errors'])) {
-            // Clears the cart only if the order was successful.
-            $_SESSION['cart'] = [];
-            // clear the cookie after a successful order
-            setcookie('munchies_user', '', time() - 3600, "/");
+            $process = $shop->processOrder($_SESSION['cart']);
+            
+            if (!empty($process['errors'])) {
+                // If there are stock issues, show them on the current page
+                $orderResult['errors'] = array_merge($orderResult['errors'], $process['errors']);
+            } 
+            else {
+                 // Clear the cart
+                $_SESSION['cart'] = [];
+                
+                // Clear the cookie after a successful order 
+                setcookie('munchies_user', '', time() - 60, "/");
+
+                // Redirect to homepage after order successful
+                header("Location: index.php");
+                exit(); 
+            }
         }
     }
 }
