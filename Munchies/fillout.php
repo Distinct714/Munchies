@@ -52,5 +52,12 @@
             </div>
         </main>
 
+        <script>
+            // Redirect to home after 60 seconds
+            setTimeout(function() {
+                window.location.href = 'index.php';
+            }, 60000);
+        </script>
+
     </body>
 </html>

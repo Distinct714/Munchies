@@ -212,6 +212,19 @@ foreach ($_SESSION['cart'] as $id => $qty) {
         </form>
     </main>
 
+        <script>
+
+            // Redirect to home after 60 seconds
+
+            setTimeout(function() {
+
+                window.location.href = 'index.php';
+
+            }, 60000);
+
+        </script>
+
+
     <footer>
         @2026 Munchies. All rights reserved.
     </footer>
