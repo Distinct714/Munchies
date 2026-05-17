@@ -1,5 +1,4 @@
 /* PRODUCT LAYOUT*/
-
 * {
     margin: 0;
     padding: 0;
@@ -26,7 +25,7 @@ body {
     color: white;
 }
 
-.logo {
+.logo_name {
     flex: 1;
     font-weight: bold;
     font-size: 1.2rem;
@@ -171,7 +170,6 @@ body {
 }
 
 /* CHECKOUT LAYOUT*/
-
 .checkout-bar {
     padding: 30px;
     display: flex;
@@ -280,7 +278,6 @@ body {
 }
 
 /* FOOTER LAYOUT*/
-
 footer {
     text-align: center; 
     padding: 30px; 

@@ -15,7 +15,7 @@ body {
     margin: 0;
 }
 
-/* Navbar*/
+/* NAVBAR LAYOUT*/
 .navbar {
     display: flex;
     align-items: center;
@@ -24,7 +24,7 @@ body {
     height: 60px;
 }
 
-.logo {
+.logo_name {
     color: white;
     font-size: 1.1rem;
     flex: 1;
@@ -49,7 +49,7 @@ body {
     flex: 1;
 }
 
-/* Split Layout */
+/* SPLIT BG IMAGE AND BG COLOR LAYOUT */
 .split-container {
     display: flex;
     height: calc(100vh - 60px);
@@ -65,7 +65,7 @@ body {
     object-fit: cover;
 }
 
-/* Form Section */
+/* FORM SECTION */
 .form-section {
     flex: 1;
     display: flex;
@@ -93,7 +93,6 @@ h1 {
     margin-bottom: 30px;
 }
 
-/* Form Alignment */
 .form-group {
     display: flex;
     align-items: center;
@@ -115,7 +114,6 @@ h1 {
     background-color: transparent;
 }
 
-/* The "Enter" Button */
 .submit-btn {
     margin-top: 20px;
     margin-left: 110px;

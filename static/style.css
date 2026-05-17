@@ -11,7 +11,7 @@ body {
     line-height: 1.6;
 }
 
-/* Navbar */
+/* NAVBAR LAYOUT*/
 .navbar {
     display: flex;
     align-items: center;
@@ -44,7 +44,7 @@ body {
     content: "";
     flex: 1;
 }
-/* Hero Section */
+/* HERO SECTION */
 .hero {
     position: relative;
     height: calc(100vh - 60px);
@@ -66,12 +66,10 @@ body {
 
 .hero-content {
     position: relative;
-    z-index: 2;
     max-width: 500px;
     margin-top: 300px;
 }
 
-/* Typography */
 h1 {
     font-size: 5rem;
     font-weight: 700;
@@ -85,7 +83,7 @@ p {
     color: white;
 }
 
-/* Buttons */
+/* HERO BUTTONS */
 .buttons {
     display: flex;
     gap: 20px;
@@ -96,7 +94,6 @@ p {
     border: none;
     border-radius: 8px;
     font-size: 1rem;
-    cursor: pointer;
     color: white;
 }
 
