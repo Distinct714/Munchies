@@ -121,7 +121,7 @@ foreach ($_SESSION['cart'] as $id => $qty) {
 <body>
 
     <nav class="navbar">
-        <div class="logo">Munchies</div>
+        <div class="logo_name">Munchies</div>
         <ul class="nav-links">
             <li><a href="index.php">Home</a></li>
             <li><a href="fillout.php">Product</a></li>
@@ -140,8 +140,10 @@ foreach ($_SESSION['cart'] as $id => $qty) {
             <section class="product-grid">
                 <?php foreach ($products as $productId => $product): ?>
                     <?php $stock = $shop->getStock($productId); ?>
+                    
                     <div class="card <?php echo $stock === 0 ? 'sold-out' : ''; ?>">
                         <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['alt']); ?>">
+                        
                         <div class="card-info">
                             <div>
                                 <h3><?php echo htmlspecialchars($product['name']); ?></h3>
@@ -170,6 +172,7 @@ foreach ($_SESSION['cart'] as $id => $qty) {
                                     Add to Cart
                                 </button>
                             </div>
+
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -203,6 +206,7 @@ foreach ($_SESSION['cart'] as $id => $qty) {
                     <h4>Your Cart</h4>
                     <?php if (empty($_SESSION['cart'])): ?>
                         <p class="empty-msg">No items added yet.</p>
+
                     <?php else: ?>
                         <ul class="cart-list">
                             <?php foreach ($_SESSION['cart'] as $id => $qty): ?>
@@ -215,8 +219,6 @@ foreach ($_SESSION['cart'] as $id => $qty) {
                     <?php endif; ?>
 
                     <div class="payment-methods">
-                       
-                        
                         <h4>Select Payment Method:</h4>
                         <label><input type="radio" name="pay" value="cod"> COD</label>
                         <label><input type="radio" name="pay" value="online"> Online</label>
