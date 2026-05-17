@@ -1,13 +1,13 @@
 <!-- MUFFIN CLASS -->
 
-<?php // Manages muffin products, session-based stock, and order processing.
-
+<?php 
+// Manages muffin products, session-based stock, and order processing.
 class MuffinShop
 {
     private array $products;
     private string $stockSessionKey = 'munchies_stock';
 
-    // Sets up the product list and initializes stock if it doesn't exist.
+    // Sets up product list and initializes stock if it doesn't exist.
     public function __construct()
     {
         $this->products = [
@@ -60,13 +60,11 @@ class MuffinShop
                 'default_stock' => 50,
             ],
         ];
-
         // If stock isn't in the session, set it to defaults
         if (!isset($_SESSION[$this->stockSessionKey])) {
             $this->resetStock();
         }
     }
-
     // Validates and sets class properties. Prevents negative values for price or stock.
     public function __set($name, $value) {
         if ($name == "price" && $value < 0) {
@@ -79,7 +77,6 @@ class MuffinShop
             $this->$name = $value;
         }
     }
-
     // Runs when the object is copied. Resets price and stock in the product array.
     public function __clone() {
         if (isset($this->products)) {
@@ -93,28 +90,21 @@ class MuffinShop
     public function __get($name) {
         return $this->$name;
     }
-
     // Returns a simple text summary when the object is used as a string.
     public function __toString() {
         return "MuffinShop Object: Managing " . count($this->products) . " products.";
     }
-
     // Returns the product list for display.
-    public function getProducts(): array
-    {
+    public function getProducts(): array {
         return $this->products;
     }
-
     // Gets current stock for a specific muffin from the session.
-    public function getStock(string $productId): int
-    {
+    public function getStock(string $productId): int {
         $stock = $_SESSION[$this->stockSessionKey][$productId] ?? 0;
         return max(0, (int) $stock);
     }
-
     // Checks stock, calculates total price, and updates the session stock.
-    public function processOrder(array $quantities): array
-    {
+    public function processOrder(array $quantities): array {
         $errors = [];
         $success = [];
         $total = 0.0;
@@ -125,13 +115,11 @@ class MuffinShop
             if (isset($quantities[$productId])) {
                 $requested = (int) $quantities[$productId];
             }
-
             // // Prevent negative orders
             if ($requested < 0) {
                 $errors[] = 'Quantity for ' . $product['name'] . ' cannot be negative.';
                 $requested = 0;
             }
-
             // Check if item is sold out
             $availableStock = $this->getStock($productId);
 
@@ -139,7 +127,6 @@ class MuffinShop
                 $errors[] = $product['name'] . ' is already sold out.';
                 continue;
             }
-
             // Adjust order if request is more than available stock
             $purchased = $requested;
 
@@ -147,7 +134,6 @@ class MuffinShop
                 $purchased = $availableStock;
                 $errors[] = 'Only ' . $availableStock . ' left for ' . $product['name'] . '. Quantity was adjusted.';
             }
-
             // If buying, deduct from session stock and add to total
             if ($purchased > 0) {
                 $newStock = $availableStock - $purchased;
@@ -163,7 +149,6 @@ class MuffinShop
         if (empty($success) && empty($errors)) {
             $errors[] = 'Please choose at least one muffin to order.';
         }
-
         return [
             'errors' => $errors,
             'success' => $success,
@@ -171,18 +156,14 @@ class MuffinShop
         ];
     }
     // Gets the initial value for the quantity input fields.
-    public function getInitialQuantity(string $productId): int
-    {
+    public function getInitialQuantity(string $productId): int{
         if (!isset($_POST['qty'][$productId])) {
             return 0;
         }
-
         return max(0, (int) $_POST['qty'][$productId]);
     }
-    
     // Resets the session stock back to the original default amounts.
-    public function resetStock(): void
-    {
+    public function resetStock(): void {
         $_SESSION[$this->stockSessionKey] = [];
 
         foreach ($this->products as $productId => $product) {
