@@ -7,11 +7,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Munchies | Affordable Muffins</title>
         <link rel="stylesheet" href="static/style.css">
-
     </head>
 
     <body>
-
         <nav class="navbar">
             <div class="logo_name">Munchies</div>
             <ul class="nav-links">
@@ -37,6 +35,5 @@
                 </div>
             </div>
         </header>
-
     </body>
 </html>
