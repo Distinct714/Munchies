@@ -1,14 +1,38 @@
-<?php // PHP BACKEND FOR HANDLING MUNCHIES LOGIC SYSTEM
+<!-- PHP BACKEND FOR HANDLING MUNCHIES LOGIC SYSTEM -->
 
-session_start(); // Starts the session to track the cart and user data.
+<?php 
+ // Starts the session to track the cart and user data.
+session_start();
 
-// Includes the external class file that manages product data and order logic.
+// PHP INACTIVITY TIMEOUT LOGIC
+$timeoutDuration = 60;+
+$currentTime = time();
+
+if (isset($_SESSION['last_activity'])) {
+    $timePassed = $currentTime - $_SESSION['last_activity'];
+    if ($timePassed > $timeoutDuration) {
+
+        // Time expired! Destroy old session for next user
+        $_SESSION = [];
+        if (isset($_COOKIE['munchies_user'])) {
+            setcookie('munchies_user', '', time() - 3600, "/");
+        }
+        session_destroy();
+        
+        // Start fresh session for new user
+        session_start();
+    }
+}
+
+$_SESSION['last_activity'] = $currentTime;
+
+// Includes external class file that manages product data and order logic.
 require_once __DIR__ . '/classes/MuffinShop.php';
 
 // Creates an instance of the MuffinShop class.
 $shop = new MuffinShop();
 
-// Retrieves the list of muffins (name, price, etc.) from MuffinShop().
+// Retrieves the list of muffins' name, price, etc. from MuffinShop().
 $products = $shop->getProducts();
 
 // COOKIE & SESSION LOGIC
@@ -18,7 +42,7 @@ $customerName = $_SESSION['munchies_customer_name'] ?? ($_COOKIE['munchies_user'
 if (!isset($_SESSION['cart'])) { $_SESSION['cart'] = []; }
 $orderResult = ['errors' => [], 'success' => [], 'total' => 0];
 
-// This block runs only when a user clicks a button (Add, Remove, or Submit).
+// Below runs only when a user clicks a button (Add, Remove, or Submit).
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 1. CAPTURING CUSTOMER NAME & SETTING COOKIES
@@ -215,11 +239,8 @@ foreach ($_SESSION['cart'] as $id => $qty) {
         <script>
 
             // Redirect to home after 60 seconds
-
             setTimeout(function() {
-
                 window.location.href = 'index.php';
-
             }, 60000);
 
         </script>
