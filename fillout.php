@@ -12,7 +12,7 @@
     <body class="product-page">
 
         <nav class="navbar">
-            <div class="logo">Munchies</div>
+            <div class="logo_name">Munchies</div>
             <ul class="nav-links">
                 <li><a href="index.php">Home</a></li>
                 <li><a href="fillout.php">Product</a></li>
