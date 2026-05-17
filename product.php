@@ -23,7 +23,6 @@ if (isset($_SESSION['last_activity'])) {
         session_start();
     }
 }
-
 $_SESSION['last_activity'] = $currentTime;
 
 // Includes external class file that manages product data and order logic.
@@ -54,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['munchies_customer_name'] = $customerName;
         setcookie('munchies_user', $customerName, time() + 60, "/"); 
     }
-    
     // 2. ADD TO CART LOGIC
     if (isset($_POST['add_to_cart'])) {
         $productId = $_POST['add_to_cart'];
@@ -63,13 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['cart'][$productId] = $qty;
         }
     }
-
     // 3. REMOVE ITEM LOGIC
     if (isset($_POST['remove_item'])) {
-        $removeId = $_POST['remove_item'];
-        unset($_SESSION['cart'][$removeId]);
+        unset($_SESSION['cart'][$_POST['remove_item']]);
     }
-
     // 4. FINAL ORDER SUBMISSION
     if (isset($_POST['final_submit'])) {
         $paymentMethod = $_POST['pay'] ?? '';
@@ -78,12 +73,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($paymentMethod === '') {
             $orderResult['errors'][] = 'Please select a payment method before submitting.';
         } 
-        
         // Check 2: Validate that the cart is not empty
         if (empty($_SESSION['cart'])) {
             $orderResult['errors'][] = 'Your cart is empty. Please add at least one muffin.';
         }
-
         // Only proceed to process the order if the above checks passed
         if (empty($orderResult['errors'])) {
             $process = $shop->processOrder($_SESSION['cart']);
@@ -106,7 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-
 // Calculate and display running total price shown in the checkout bar.
 foreach ($_SESSION['cart'] as $id => $qty) {
     if (isset($products[$id])) {
@@ -114,15 +106,18 @@ foreach ($_SESSION['cart'] as $id => $qty) {
     }
 }
 ?>
-
+<!-- HTML FRONTEND FOR DISPLAYING THE PRODUCT PAGE AND ORDER FORM -->
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order | Munchies</title>
     <link rel="stylesheet" href="static/style3.css">
 </head>
+
 <body>
 
     <nav class="navbar">
@@ -237,17 +232,16 @@ foreach ($_SESSION['cart'] as $id => $qty) {
     </main>
 
         <script>
-
             // Redirect to home after 60 seconds
             setTimeout(function() {
                 window.location.href = 'index.php';
             }, 60000);
-
         </script>
-
 
     <footer>
         @2026 Munchies. All rights reserved.
     </footer>
+
 </body>
+
 </html>
