@@ -4,6 +4,6 @@ This small project was created by us, **students of Polytechnic University of th
 
 # About
 
-Munchies is a website plaform.
+Munchies is a website plaform that allow user to choose the muffins they like.
 
 
