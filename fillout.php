@@ -1,3 +1,27 @@
+<?php
+session_start();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $firstname = trim($_POST['firstname'] ?? '');
+    $lastname = trim($_POST['lastname'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+
+    if ($firstname !== '' && $lastname !== '' && $email !== '') {
+        $_SESSION['munchies_customer'] = [
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'email' => $email,
+        ];
+        $_SESSION['munchies_customer_name'] = trim($firstname . ' ' . $lastname);
+    }
+
+    header('Location: product.php');
+    exit();
+}
+
+$savedCustomer = $_SESSION['munchies_customer'] ?? ['firstname' => '', 'lastname' => '', 'email' => ''];
+?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -30,20 +54,20 @@
                     <h1>Welcome to Munchies!</h1>
                     <p class="subtitle">Fill out the form below to order:</p>
 
-                    <form action="product.php" method="POST">
+                    <form action="fillout.php" method="POST">
                         <div class="form-group">
                             <label>First Name:</label>
-                            <input type="text" name="firstname" placeholder="Fill your first name here" required>
+                            <input type="text" name="firstname" placeholder="Fill your first name here" value="<?php echo htmlspecialchars($savedCustomer['firstname']); ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label>Last Name:</label>
-                            <input type="text" name="lastname" placeholder="Fill your last name here" required>
+                            <input type="text" name="lastname" placeholder="Fill your last name here" value="<?php echo htmlspecialchars($savedCustomer['lastname']); ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label>Email:</label>
-                            <input type="email" name="email" placeholder="Fill your email here" required>
+                            <input type="email" name="email" placeholder="Fill your email here" value="<?php echo htmlspecialchars($savedCustomer['email']); ?>" required>
                         </div>
 
                         <button type="submit" class="submit-btn">Enter</button>
