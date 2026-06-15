@@ -4,28 +4,31 @@ session_start();
 $orderSuccess = $_SESSION['order_success'] ?? null;
 unset($_SESSION['order_success']);
 ?>
+
 <!DOCTYPE html>
+
 <html lang="en">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Success | Munchies</title>
     <link rel="stylesheet" href="static/style3.css">
+
     <style>
         .success-shell {
             min-height: 100vh;
             display: grid;
             place-items: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, #fff8ef 0%, #f6efe3 100%);
+            background: #F8F5F2;
         }
 
         .success-card {
-            width: min(760px, 100%);
-            background: #fff;
-            border-radius: 24px;
+            width: 750px;
+            background: #F8F5F2;
+            border-radius: 4px;
             padding: 2rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.1);
         }
 
         .success-list {
@@ -43,8 +46,11 @@ unset($_SESSION['order_success']);
             text-decoration: none;
         }
     </style>
+
 </head>
+
 <body>
+
     <main class="success-shell">
         <section class="success-card">
             <?php if (!$orderSuccess): ?>
@@ -81,5 +87,7 @@ unset($_SESSION['order_success']);
             <?php endif; ?>
         </section>
     </main>
+
 </body>
+
 </html>
