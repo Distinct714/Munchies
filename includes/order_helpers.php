@@ -42,13 +42,12 @@ function munchies_get_or_create_user_id(mysqli $conn, array $customer): ?int
         return (int) $row['user_id'];
     }
 
-    $defaultPassword = password_hash('munchies123', PASSWORD_DEFAULT);
-    $stmt = mysqli_prepare($conn, 'INSERT INTO tbl_user (lname, fname, email, user_pass) VALUES (?, ?, ?, ?)');
+    $stmt = mysqli_prepare($conn, 'INSERT INTO tbl_user (lname, fname, email) VALUES (?, ?, ?)');
     if (!$stmt) {
         return null;
     }
 
-    mysqli_stmt_bind_param($stmt, 'ssss', $lastname, $firstname, $email, $defaultPassword);
+    mysqli_stmt_bind_param($stmt, 'sss', $lastname, $firstname, $email);
 
     if (!mysqli_stmt_execute($stmt)) {
         mysqli_stmt_close($stmt);
