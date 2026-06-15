@@ -1,26 +1,29 @@
-<?php require_once __DIR__ . '/includes/order_success_view.php'; __halt_compiler();
+<?php require_once __DIR__ . '/includes/order_success_view.php'; __halt_compiler(); ?>
+
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Success | Munchies</title>
     <link rel="stylesheet" href="static/style3.css">
+
     <style>
         .success-shell {
             min-height: 100vh;
             display: grid;
             place-items: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, #fff8ef 0%, #f6efe3 100%);
+            background: #F8F5F2;
         }
 
         .success-card {
-            width: min(760px, 100%);
+            width: 750px;
             background: #fff;
-            border-radius: 24px;
+            border-radius: 4px;
             padding: 2rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.1);
         }
 
         .success-card h1 {
@@ -42,8 +45,11 @@
             text-decoration: none;
         }
     </style>
+
 </head>
+
 <body>
+
     <main class="success-shell">
         <section class="success-card">
             <?php if (!$orderSuccess): ?>
@@ -81,5 +87,7 @@
             <?php endif; ?>
         </section>
     </main>
+
 </body>
+
 </html>
