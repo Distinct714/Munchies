@@ -1,4 +1,5 @@
-<?php require_once __DIR__ . '/includes/order_success_view.php'; __halt_compiler(); ?>
+<?php require_once __DIR__ . '/includes/order_success_view.php';
+__halt_compiler();  ?>
 
 <!DOCTYPE html>
 
@@ -8,48 +9,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Success | Munchies</title>
-    <link rel="stylesheet" href="static/style3.css">
-
-    <style>
-        .success-shell {
-            min-height: 100vh;
-            display: grid;
-            place-items: center;
-            background: #F8F5F2;
-        }
-
-        .success-card {
-            width: 750px;
-            background: #fff;
-            border-radius: 4px;
-            padding: 2rem;
-            box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .success-card h1 {
-            margin-top: 0;
-        }
-
-        .success-list {
-            padding-left: 1.25rem;
-        }
-
-        .success-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 1.5rem;
-        }
-
-        .success-actions a {
-            text-decoration: none;
-        }
-    </style>
-
+    <link rel="stylesheet" href="static/style4.css">
 </head>
 
 <body>
-
+    /* Display order success message and details if available, otherwise show a message indicating no order found*/
     <main class="success-shell">
         <section class="success-card">
             <?php if (!$orderSuccess): ?>
