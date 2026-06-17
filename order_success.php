@@ -1,49 +1,19 @@
-<?php require_once __DIR__ . '/includes/order_success_view.php'; __halt_compiler();
+<?php require_once __DIR__ . '/includes/order_success_view.php';
+__halt_compiler();  ?>
+
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Success | Munchies</title>
-    <link rel="stylesheet" href="static/style3.css">
-    <style>
-        .success-shell {
-            min-height: 100vh;
-            display: grid;
-            place-items: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, #fff8ef 0%, #f6efe3 100%);
-        }
-
-        .success-card {
-            width: min(760px, 100%);
-            background: #fff;
-            border-radius: 24px;
-            padding: 2rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-        }
-
-        .success-card h1 {
-            margin-top: 0;
-        }
-
-        .success-list {
-            padding-left: 1.25rem;
-        }
-
-        .success-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 1.5rem;
-        }
-
-        .success-actions a {
-            text-decoration: none;
-        }
-    </style>
+    <link rel="stylesheet" href="static/style4.css">
 </head>
+
 <body>
+    /* Display order success message and details if available, otherwise show a message indicating no order found*/
     <main class="success-shell">
         <section class="success-card">
             <?php if (!$orderSuccess): ?>
@@ -81,5 +51,7 @@
             <?php endif; ?>
         </section>
     </main>
+
 </body>
+
 </html>
