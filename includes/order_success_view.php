@@ -50,7 +50,7 @@ unset($_SESSION['order_success']);
 </head>
 
 <body>
-
+    /* Display order success message and details if available, otherwise show a message indicating no order found*/
     <main class="success-shell">
         <section class="success-card">
             <?php if (!$orderSuccess): ?>
