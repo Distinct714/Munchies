@@ -8,9 +8,21 @@ class MuffinShop
     private string $stockSessionKey = 'munchies_stock';
 
     // Sets up product list and initializes stock if it doesn't exist.
-    public function __construct()
+    public function __construct(?mysqli $conn = null)
     {
-        $this->products = [
+        $this->products = $this->loadProducts($conn);
+
+        // If stock isn't in the session, set it to defaults.
+        if (!isset($_SESSION[$this->stockSessionKey])) {
+            $this->resetStock();
+        } else {
+            $this->syncStockKeys();
+        }
+    }
+
+    private function getFallbackProducts(): array
+    {
+        return [
             'blueberry' => [
                 'name' => 'Blueberry Muffin',
                 'description' => 'A golden-domed treat featuring a tender, buttery crumb and pockets of sweet, bursting blueberries.',
@@ -60,9 +72,63 @@ class MuffinShop
                 'default_stock' => 50,
             ],
         ];
-        // If stock isn't in the session, set it to defaults
-        if (!isset($_SESSION[$this->stockSessionKey])) {
-            $this->resetStock();
+    }
+
+    private function loadProducts(?mysqli $conn): array
+    {
+        if (!$conn) {
+            return $this->getFallbackProducts();
+        }
+
+        $products = [];
+        $archiveColumnExists = false;
+        $columnResult = mysqli_query($conn, "SHOW COLUMNS FROM tbl_product LIKE 'is_archived'");
+
+        if ($columnResult) {
+            $archiveColumnExists = mysqli_num_rows($columnResult) > 0;
+            mysqli_free_result($columnResult);
+        }
+
+        $query = "SELECT product_code, product_name, product_desc, product_image, price, quantity FROM tbl_product";
+
+        if ($archiveColumnExists) {
+            $query .= ' WHERE COALESCE(is_archived, 0) = 0';
+        }
+
+        $query .= ' ORDER BY product_name ASC';
+        $result = mysqli_query($conn, $query);
+
+        if (!$result) {
+            return $this->getFallbackProducts();
+        }
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $productId = 'p' . (int) $row['product_code'];
+            $products[$productId] = [
+                'name' => $row['product_name'],
+                'description' => $row['product_desc'],
+                'price' => (float) $row['price'],
+                'image' => $row['product_image'],
+                'alt' => $row['product_name'],
+                'default_stock' => max(0, (int) $row['quantity']),
+            ];
+        }
+
+        mysqli_free_result($result);
+
+        return $products ?: $this->getFallbackProducts();
+    }
+
+    private function syncStockKeys(): void
+    {
+        if (!isset($_SESSION[$this->stockSessionKey]) || !is_array($_SESSION[$this->stockSessionKey])) {
+            $_SESSION[$this->stockSessionKey] = [];
+        }
+
+        foreach ($this->products as $productId => $product) {
+            if (!isset($_SESSION[$this->stockSessionKey][$productId])) {
+                $_SESSION[$this->stockSessionKey][$productId] = $product['default_stock'];
+            }
         }
     }
     // Validates and sets class properties. Prevents negative values for price or stock.

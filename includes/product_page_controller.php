@@ -23,7 +23,7 @@ if (isset($_SESSION['last_activity'])) {
 }
 $_SESSION['last_activity'] = $currentTime;
 
-$shop = new MuffinShop();
+$shop = new MuffinShop($conn);
 $products = $shop->getProducts();
 
 if (!isset($_SESSION['cart'])) {
