@@ -13,33 +13,6 @@ function munchies_admin_flash(string $message): void
     $_SESSION['admin_flash'] = $message;
 }
 
-function munchies_admin_has_archive_flag(mysqli $conn): bool
-{
-    $result = mysqli_query($conn, "SHOW COLUMNS FROM tbl_product LIKE 'is_archived'");
-
-    if (!$result) {
-        return false;
-    }
-
-    $hasColumn = mysqli_num_rows($result) > 0;
-    mysqli_free_result($result);
-
-    return $hasColumn;
-}
-
-function munchies_admin_ensure_archive_flag(mysqli $conn): void
-{
-    if (munchies_admin_has_archive_flag($conn)) {
-        return;
-    }
-
-    $altered = mysqli_query($conn, 'ALTER TABLE tbl_product ADD COLUMN is_archived TINYINT(1) NOT NULL DEFAULT 0 AFTER quantity');
-
-    if (!$altered) {
-        die('Unable to prepare product archive support: ' . mysqli_error($conn));
-    }
-}
-
 function munchies_admin_clean_string(?string $value): string
 {
     return trim((string) $value);
@@ -57,7 +30,7 @@ function munchies_admin_clean_quantity($value): int
 
 function munchies_admin_get_product(mysqli $conn, int $productCode): ?array
 {
-    $stmt = mysqli_prepare($conn, 'SELECT product_code, product_name, product_desc, product_image, price, quantity, COALESCE(is_archived, 0) AS is_archived FROM tbl_product WHERE product_code = ? LIMIT 1');
+    $stmt = mysqli_prepare($conn, 'SELECT product_code, product_name, product_desc, product_image, price, quantity FROM tbl_product WHERE product_code = ? LIMIT 1');
 
     if (!$stmt) {
         return null;
@@ -84,8 +57,6 @@ function munchies_admin_redirect(string $query = ''): void
     exit();
 }
 
-munchies_admin_ensure_archive_flag($conn);
-
 $flashMessage = $_SESSION['admin_flash'] ?? '';
 unset($_SESSION['admin_flash']);
 
@@ -104,19 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             munchies_admin_redirect();
         }
 
-        $stmt = mysqli_prepare($conn, 'INSERT INTO tbl_product (product_name, product_desc, product_image, price, quantity, is_archived) VALUES (?, ?, ?, ?, ?, 0)');
-
-        if (!$stmt) {
-            die('Unable to prepare insert query: ' . mysqli_error($conn));
-        }
-
-        mysqli_stmt_bind_param($stmt, 'sssdi', $name, $description, $image, $price, $quantity);
-
-        if (!mysqli_stmt_execute($stmt)) {
-            mysqli_stmt_close($stmt);
-            munchies_admin_flash('Unable to add the product.');
-            munchies_admin_redirect();
-        }
+            $stmt = mysqli_prepare($conn, 'INSERT INTO tbl_product (product_name, product_desc, product_image, price, quantity) VALUES (?, ?, ?, ?, ?)');
 
         mysqli_stmt_close($stmt);
         munchies_admin_flash('Product added successfully.');
@@ -155,57 +114,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         munchies_admin_redirect('edit=' . $productCode);
     }
 
-    if ($action === 'archive_product') {
+    if ($action === 'delete_product') {
         $productCode = (int) ($_POST['product_code'] ?? 0);
 
         if ($productCode <= 0) {
-            munchies_admin_flash('Invalid product selected for archiving.');
+            munchies_admin_flash('Invalid product selected for deletion.');
             munchies_admin_redirect();
         }
 
-        $stmt = mysqli_prepare($conn, 'UPDATE tbl_product SET is_archived = 1 WHERE product_code = ?');
+        $stmt = mysqli_prepare($conn, 'DELETE FROM tbl_product WHERE product_code = ?');
 
         if (!$stmt) {
-            die('Unable to prepare archive query: ' . mysqli_error($conn));
+            die('Unable to prepare delete query: ' . mysqli_error($conn));
         }
 
         mysqli_stmt_bind_param($stmt, 'i', $productCode);
 
         if (!mysqli_stmt_execute($stmt)) {
             mysqli_stmt_close($stmt);
-            munchies_admin_flash('Unable to archive the product.');
+            munchies_admin_flash('Unable to delete the product.');
             munchies_admin_redirect();
         }
 
         mysqli_stmt_close($stmt);
-        munchies_admin_flash('Product archived successfully.');
-        munchies_admin_redirect();
-    }
-
-    if ($action === 'unarchive_product') {
-        $productCode = (int) ($_POST['product_code'] ?? 0);
-
-        if ($productCode <= 0) {
-            munchies_admin_flash('Invalid product selected for unarchiving.');
-            munchies_admin_redirect();
-        }
-
-        $stmt = mysqli_prepare($conn, 'UPDATE tbl_product SET is_archived = 0 WHERE product_code = ?');
-
-        if (!$stmt) {
-            die('Unable to prepare unarchive query: ' . mysqli_error($conn));
-        }
-
-        mysqli_stmt_bind_param($stmt, 'i', $productCode);
-
-        if (!mysqli_stmt_execute($stmt)) {
-            mysqli_stmt_close($stmt);
-            munchies_admin_flash('Unable to unarchive the product.');
-            munchies_admin_redirect();
-        }
-
-        mysqli_stmt_close($stmt);
-        munchies_admin_flash('Product restored successfully.');
+        munchies_admin_flash('Product deleted successfully.');
         munchies_admin_redirect();
     }
 }
@@ -216,7 +148,7 @@ if (isset($_GET['edit'])) {
 }
 
 $productRows = [];
-$result = mysqli_query($conn, 'SELECT product_code, product_name, product_desc, product_image, price, quantity, COALESCE(is_archived, 0) AS is_archived FROM tbl_product ORDER BY COALESCE(is_archived, 0) ASC, product_name ASC');
+$result = mysqli_query($conn, 'SELECT product_code, product_name, product_desc, product_image, price, quantity FROM tbl_product ORDER BY product_name ASC');
 
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
@@ -337,16 +269,6 @@ $formValues = [
         th {
             background: #f1f1f1;
         }
-        .status {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 999px;
-            font-size: 12px;
-            background: #e9f6ea;
-        }
-        .status.archived {
-            background: #fde9e9;
-        }
         .actions {
             display: flex;
             gap: 8px;
@@ -418,7 +340,6 @@ $formValues = [
                         <th>Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                        <th>Status</th>
                         <th>Image</th>
                         <th>Actions</th>
                     </tr>
@@ -426,37 +347,26 @@ $formValues = [
                 <tbody>
                     <?php if (empty($productRows)): ?>
                         <tr>
-                            <td colspan="7">No products found.</td>
+                            <td colspan="6">No products found.</td>
                         </tr>
                     <?php else: ?>
+                        <?php $rowNumber = 0; ?>
                         <?php foreach ($productRows as $product): ?>
+                            <?php $rowNumber++; ?>
                             <tr>
-                                <td><?php echo (int) $product['product_code']; ?></td>
+                                <td><?php echo $rowNumber; ?></td>
                                 <td><?php echo htmlspecialchars($product['product_name']); ?></td>
                                 <td>₱<?php echo number_format((float) $product['price'], 2); ?></td>
                                 <td><?php echo (int) $product['quantity']; ?></td>
-                                <td>
-                                    <span class="status <?php echo ((int) $product['is_archived'] === 1) ? 'archived' : ''; ?>">
-                                        <?php echo ((int) $product['is_archived'] === 1) ? 'Archived' : 'Active'; ?>
-                                    </span>
-                                </td>
                                 <td><?php echo htmlspecialchars($product['product_image']); ?></td>
                                 <td>
                                     <div class="actions">
                                         <a class="link-btn secondary" href="admin.php?edit=<?php echo (int) $product['product_code']; ?>">Edit</a>
-                                        <?php if ((int) $product['is_archived'] === 0): ?>
-                                            <form method="post" action="admin.php" style="display:inline;" onsubmit="return confirm('Archive this product?');">
-                                                <input type="hidden" name="action" value="archive_product">
-                                                <input type="hidden" name="product_code" value="<?php echo (int) $product['product_code']; ?>">
-                                                <button class="danger" type="submit">Archive</button>
-                                            </form>
-                                        <?php else: ?>
-                                            <form method="post" action="admin.php" style="display:inline;" onsubmit="return confirm('Restore this product?');">
-                                                <input type="hidden" name="action" value="unarchive_product">
-                                                <input type="hidden" name="product_code" value="<?php echo (int) $product['product_code']; ?>">
-                                                <button type="submit">Unarchive</button>
-                                            </form>
-                                        <?php endif; ?>
+                                        <form method="post" action="admin.php" style="display:inline;" onsubmit="return confirm('Delete this product?');">
+                                            <input type="hidden" name="action" value="delete_product">
+                                            <input type="hidden" name="product_code" value="<?php echo (int) $product['product_code']; ?>">
+                                            <button class="danger" type="submit">Delete</button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
